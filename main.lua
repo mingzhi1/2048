@@ -8,10 +8,11 @@ Tile = {
     value = 0,
 }
 
-function Tile:new(position, value)
-    x     = position.x;
-    y     = position.y;
-    value = value || 2;
+function Tile:new()
+    math.randomseed(os.time())
+    x     = math.random(1,4)
+    y     = math.random(1,4)
+    value = 2
 end
 
 function Tile:updatePosition(position)
