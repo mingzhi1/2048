@@ -1,5 +1,6 @@
 -- 2048 for TI-Nspire, NOT WORKING YET
 -- Original JavaScript Source: https://github.com/gabrielecirulli/2048/tree/master/js
+-- I don't have to work so much if there is a JavaScript to Lua compiler. However there isn't. http://lua-users.org/lists/lua-l/2011-11/msg00668.html
 --[[ (Long Copyrights) --]]
 -- platform.apilevel = '2.0'   -- TI-Lua API version, maybe I don't need so many TI APIs.
 
@@ -34,6 +35,18 @@ end
 
 push = function(direction)
     -- TODO: Let pichu the OIer do this
+end
+
+merge = function (direction) --Seems stupid, Hmm.
+    if direction == up then
+    for i=1, size do
+        for j=1, size do
+            if BL[i][j] == BL[i][j+1] then
+                BL[i][j] = BL[i][j]+1 
+                BL[i][j+1] = 0
+            end
+        end
+    end
 end
 
 randomAvailableCell = function()
