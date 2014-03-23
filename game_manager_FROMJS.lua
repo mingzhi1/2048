@@ -44,7 +44,7 @@ end
 
 -- Keep playing after winning
 GameManager.prototype.keepPlaying = function() 
-  this.keepPlaying = true;
+  this.keepPlaying = true
   this.actuator.continue()
 end
 
@@ -58,23 +58,23 @@ end
 
 -- Set up the game
 GameManager.prototype.setup = function() 
-  this.grid        = new Grid(this.size);
+  this.grid        = new Grid(this.size)
 
-  this.score       = 0;
-  this.over        = false;
-  this.won         = false;
-  this.keepPlaying = false;
+  this.score       = 0
+  this.over        = false
+  this.won         = false
+  this.keepPlaying = false
 
   -- Add the initial tiles
-  this.addStartTiles();
+  this.addStartTiles()
 
   -- Update the actuator
-  this.actuate();
+  this.actuate()
 end
 
 -- Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function()
-  for (var i = 0; i < this.startTiles; i++) do
+  for (var i = 0 i < this.startTiles i++) do
         this.addRandomTile()
     end
 end
@@ -82,17 +82,17 @@ end
 -- Adds a tile in a random position
 GameManager.prototype.addRandomTile = function() 
   if (this.grid.cellsAvailable()) then
-    var value = Math.random() < 0.9 ? 2 : 4;
-    var tile = new Tile(this.grid.randomAvailableCell(), value);
+    var value = Math.random() < 0.9 ? 2 : 4
+    var tile = new Tile(this.grid.randomAvailableCell(), value)
 
-    this.grid.insertTile(tile);
+    this.grid.insertTile(tile)
   end
 end
 
 -- Sends the updated grid to the actuator
 GameManager.prototype.actuate = function() 
   if (this.scoreManager.get() < this.score) then
-    this.scoreManager.set(this.score);
+    this.scoreManager.set(this.score)
   end
   this.actuator.actuate(this.grid, {
     score:      this.score,
@@ -107,78 +107,78 @@ end
 GameManager.prototype.prepareTiles = function() 
   this.grid.eachCell(function(x, y, tile) 
     if (tile) then
-      tile.mergedFrom = null;
-      tile.savePosition();
+      tile.mergedFrom = null
+      tile.savePosition()
     end
   end)
 end
 
 -- Move a tile and its representation
 GameManager.prototype.moveTile = function(tile, cell) 
-  this.grid.cells[tile.x][tile.y] = null;
-  this.grid.cells[cell.x][cell.y] = tile;
-  tile.updatePosition(cell);
+  this.grid.cells[tile.x][tile.y] = null
+  this.grid.cells[cell.x][cell.y] = tile
+  tile.updatePosition(cell)
 end
 
 -- Move tiles on the grid in the specified direction
 GameManager.prototype.move = function(direction) 
   -- 0: up, 1: right, 2:down, 3: left
-  var self = this;
+  var self = this
 
-  if this.isGameTerminated() then return end; -- Don't do anything if the game's over
+  if this.isGameTerminated() then return end -- Don't do anything if the game's over
 
-  var cell, tile;
+  var cell, tile
 
-  var vector     = this.getVector(direction);
-  var traversals = this.buildTraversals(vector);
-  var moved      = false;
+  var vector     = this.getVector(direction)
+  var traversals = this.buildTraversals(vector)
+  var moved      = false
 
   -- Save the current tile positions and remove merger information
-  this.prepareTiles();
+  this.prepareTiles()
 
   -- Traverse the grid in the right direction and move tiles
   traversals.x.forEach(function(x) 
     traversals.y.forEach(function(y) 
       cell = { x: x, y: y }
-      tile = self.grid.cellContent(cell);
+      tile = self.grid.cellContent(cell)
 
       if tile then
         var positions = self.findFarthestPosition(cell, vector)
-        var next      = self.grid.cellContent(positions.next);
+        var next      = self.grid.cellContent(positions.next)
 
         -- Only one merger per row traversal?
         if next && next.value === tile.value && !next.mergedFrom then
-          var merged = new Tile(positions.next, tile.value * 2);
-          merged.mergedFrom = [tile, next];
+          var merged = new Tile(positions.next, tile.value * 2)
+          merged.mergedFrom = [tile, next]
 
-          self.grid.insertTile(merged);
-          self.grid.removeTile(tile);
+          self.grid.insertTile(merged)
+          self.grid.removeTile(tile)
 
           -- Converge the two tiles' positions
-          tile.updatePosition(positions.next);
+          tile.updatePosition(positions.next)
 
           -- Update the score
-          self.score += merged.value;
+          self.score += merged.value
 
           -- The mighty 2048 tile
           if merged.value === 2048 then
-              self.won = true;
+              self.won = true
           else  
-              self.moveTile(tile, positions.farthest);
+              self.moveTile(tile, positions.farthest)
        
 
         if !self.positionsEqual(cell, tile) then
-          moved = true; -- The tile moved from its original cell!
+          moved = true -- The tile moved from its original cell!
         end
       end
     end) -- What happened to the syntax?
   end)
 
   if moved then
-    this.addRandomTile();
+    this.addRandomTile()
 
     if !this.movesAvailable() then
-      this.over = true; -- Game over!
+      this.over = true -- Game over!
     end
 
     this.actuate()
@@ -195,14 +195,14 @@ GameManager.prototype.getVector = function(direction)
     3: { x: -1, y: 0 }   -- left
   }
 
-  return map[direction];
+  return map[direction]
 end
 
 -- Build a list of positions to traverse in the right order
 GameManager.prototype.buildTraversals = function(vector) 
   var traversals = { x: [], y: [] }
 
-  for (var pos = 0; pos < this.size; pos++) do
+  for (var pos = 0 pos < this.size pos++) do
     traversals.x.push(pos)
     traversals.y.push(pos)
   end
@@ -219,7 +219,7 @@ GameManager.prototype.findFarthestPosition = function(cell, vector)
 
   -- Progress towards the vector direction until an obstacle is found
   do {
-    previous = cell;
+    previous = cell
     cell     = { x: previous.x + vector.x, y: previous.y + vector.y }
   } while (this.grid.withinBounds(cell) &&
            this.grid.cellAvailable(cell)) do
@@ -231,25 +231,25 @@ GameManager.prototype.findFarthestPosition = function(cell, vector)
 end 
 
 GameManager.prototype.movesAvailable = function() 
-  return this.grid.cellsAvailable() || this.tileMatchesAvailable();
+  return this.grid.cellsAvailable() || this.tileMatchesAvailable()
 end
 
 -- Check for available matches between tiles (more expensive check)
 GameManager.prototype.tileMatchesAvailable = function() 
-  var self = this;
+  var self = this
 
-  var tile;
+  var tile
 
-  for (var x = 0; x < this.size; x++) do
-    for (var y = 0; y < this.size; y++) do
-      tile = this.grid.cellContent({ x: x, y: y });
+  for (var x = 0 x < this.size x++) do
+    for (var y = 0 y < this.size y++) do
+      tile = this.grid.cellContent({ x: x, y: y })
 
       if (tile) then
-        for (var direction = 0; direction < 4; direction++) do
-          var vector = self.getVector(direction);
+        for (var direction = 0 direction < 4 direction++) do
+          var vector = self.getVector(direction)
           var cell   = { x: x + vector.x, y: y + vector.y }
 
-          var other  = self.grid.cellContent(cell);
+          var other  = self.grid.cellContent(cell)
 
           if (other && other.value === tile.value) then
             return true -- These two tiles can be merged
@@ -259,9 +259,9 @@ GameManager.prototype.tileMatchesAvailable = function()
     end
   end
 
-  return false;
+  return false
 end
 
 GameManager.prototype.positionsEqual = function(first, second) 
-  return first.x === second.x && first.y === second.y;
+  return first.x === second.x && first.y === second.y
 end
