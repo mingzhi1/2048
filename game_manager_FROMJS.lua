@@ -49,7 +49,7 @@ GameManager.prototype.keepPlaying = function()
 end
 
 GameManager.prototype.isGameTerminated = function() 
-  if (this.over || (this.won && !this.keepPlaying)) then
+  if this.over || (this.won && !this.keepPlaying) then
     return true
   else 
     return false
@@ -74,14 +74,14 @@ end
 
 -- Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function()
-  for (var i = 0 i < this.startTiles i++) do
+  for var i = 0 i < this.startTiles i++ do
         this.addRandomTile()
     end
 end
 
 -- Adds a tile in a random position
 GameManager.prototype.addRandomTile = function() 
-  if (this.grid.cellsAvailable()) then
+  if this.grid.cellsAvailable() then
     var value = Math.random() < 0.9 ? 2 : 4
     var tile = new Tile(this.grid.randomAvailableCell(), value)
 
@@ -91,7 +91,7 @@ end
 
 -- Sends the updated grid to the actuator
 GameManager.prototype.actuate = function() 
-  if (this.scoreManager.get() < this.score) then
+  if this.scoreManager.get() < this.score then
     this.scoreManager.set(this.score)
   end
   this.actuator.actuate(this.grid, {
@@ -106,7 +106,7 @@ end
 -- Save all tile positions and remove merger info
 GameManager.prototype.prepareTiles = function() 
   this.grid.eachCell(function(x, y, tile) 
-    if (tile) then
+    if tile then
       tile.mergedFrom = null
       tile.savePosition()
     end
@@ -202,14 +202,14 @@ end
 GameManager.prototype.buildTraversals = function(vector) 
   var traversals = { x: [], y: [] }
 
-  for (var pos = 0 pos < this.size pos++) do
+  for var pos = 0 pos < this.size pos++ do
     traversals.x.push(pos)
     traversals.y.push(pos)
   end
 
   -- Always traverse from the farthest cell in the chosen direction
-  if (vector.x === 1) then traversals.x = traversals.x.reverse() end
-  if (vector.y === 1) then traversals.y = traversals.y.reverse() end
+  if vector.x === 1 then traversals.x = traversals.x.reverse() end
+  if vector.y === 1 then traversals.y = traversals.y.reverse() end
 
   return traversals
 end
@@ -221,8 +221,8 @@ GameManager.prototype.findFarthestPosition = function(cell, vector)
   do {
     previous = cell
     cell     = { x: previous.x + vector.x, y: previous.y + vector.y }
-  } while (this.grid.withinBounds(cell) &&
-           this.grid.cellAvailable(cell)) do
+  } while this.grid.withinBounds(cell) &&
+           this.grid.cellAvailable(cell) do
 
   return {
     farthest: previous,
@@ -240,18 +240,18 @@ GameManager.prototype.tileMatchesAvailable = function()
 
   var tile
 
-  for (var x = 0 x < this.size x++) do
-    for (var y = 0 y < this.size y++) do
+  for var x = 0 x < this.size x++ do
+    for var y = 0 y < this.size y++ do
       tile = this.grid.cellContent({ x: x, y: y })
 
-      if (tile) then
-        for (var direction = 0 direction < 4 direction++) do
+      if tile then
+        for var direction = 0 direction < 4 direction++ do
           var vector = self.getVector(direction)
           var cell   = { x: x + vector.x, y: y + vector.y }
 
           var other  = self.grid.cellContent(cell)
 
-          if (other && other.value === tile.value) then
+          if other && other.value === tile.value then
             return true -- These two tiles can be merged
           end
         end
