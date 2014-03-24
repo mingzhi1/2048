@@ -49,7 +49,7 @@ GameManager.prototype.keepPlaying = function()
 end
 
 GameManager.prototype.isGameTerminated = function() 
-  if this.over || (this.won && !this.keepPlaying) then
+  if this.over or (this.won and not this.keepPlaying) then
     return true
   else 
     return false
@@ -147,7 +147,7 @@ GameManager.prototype.move = function(direction)
         var next      = self.grid.cellContent(positions.next)
 
         -- Only one merger per row traversal?
-        if next && next.value === tile.value && !next.mergedFrom then
+        if next and next.value === tile.value and not next.mergedFrom then
           var merged = new Tile(positions.next, tile.value * 2)
           merged.mergedFrom = [tile, next]
 
@@ -167,7 +167,7 @@ GameManager.prototype.move = function(direction)
               self.moveTile(tile, positions.farthest)
        
 
-        if !self.positionsEqual(cell, tile) then
+        if not self.positionsEqual(cell, tile) then
           moved = true -- The tile moved from its original cell!
         end
       end
@@ -177,7 +177,7 @@ GameManager.prototype.move = function(direction)
   if moved then
     this.addRandomTile()
 
-    if !this.movesAvailable() then
+    if not this.movesAvailable() then
       this.over = true -- Game over!
     end
 
@@ -221,7 +221,7 @@ GameManager.prototype.findFarthestPosition = function(cell, vector)
   do {
     previous = cell
     cell     = { x: previous.x + vector.x, y: previous.y + vector.y }
-  } while this.grid.withinBounds(cell) &&
+  } while this.grid.withinBounds(cell) and
            this.grid.cellAvailable(cell) do
 
   return {
@@ -231,7 +231,7 @@ GameManager.prototype.findFarthestPosition = function(cell, vector)
 end 
 
 GameManager.prototype.movesAvailable = function() 
-  return this.grid.cellsAvailable() || this.tileMatchesAvailable()
+  return this.grid.cellsAvailable() or this.tileMatchesAvailable()
 end
 
 -- Check for available matches between tiles (more expensive check)
@@ -251,7 +251,7 @@ GameManager.prototype.tileMatchesAvailable = function()
 
           var other  = self.grid.cellContent(cell)
 
-          if other && other.value === tile.value then
+          if other and other.value === tile.value then
             return true -- These two tiles can be merged
           end
         end
@@ -263,5 +263,5 @@ GameManager.prototype.tileMatchesAvailable = function()
 end
 
 GameManager.prototype.positionsEqual = function(first, second) 
-  return first.x === second.x && first.y === second.y
+  return first.x === second.x and first.y === second.y
 end

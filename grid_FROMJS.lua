@@ -55,12 +55,12 @@ end
 
 -- Check if there are any cells available
 Grid.prototype.cellsAvailable = function() 
-  return !!this.availableCells().length
+  return !!this.availableCells().length --So what is !!……
 end
 
 -- Check if the specified cell is taken
 Grid.prototype.cellAvailable = function(cell) 
-  return !this.cellOccupied(cell)
+  return not this.cellOccupied(cell)
 end
 
 Grid.prototype.cellOccupied = function(cell) 
