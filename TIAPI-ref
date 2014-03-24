@@ -1,0 +1,231 @@
+-- TI-Lua API 2.0 reference guide
+platform.apilevel = '1.0'
+
+nl=string.char(10)
+WW=0
+WH=0
+titleText="\\1keyword TI-nspire \\1supersc TM \\1keyword Lua \\1keyword 脚本API参考指南"..nl.."(c) 2011 - 2013 Texas Instruments Inc."..nl..nl.."English version ported by Jens Kolbinger"..nl.."中文移植:wtof1996"..nl..nl.."请按菜单(menu)键来查看函数目录"
+content={}
+
+content["Std Libs(标准库)"]={1}
+content["Std Libs(标准库)"]["基本函数"]={1,'1.0','assert, collectgarbage, error, _G, getfenv, getmetatable, ipairs, load, loadstring, next, pairs, pcall, print, rawequal, rawget, rawset, select, setfenv, setmetatable, tonumber, tostring, type, unpack, _VERSION, xpcall','更多信息请参见《Lua 5.1 Reference Manual》的"Basic Functions"章节。','assert (v [, message])','Issues an error when the value of its argument v is false (nil or false)','otherwise, returns all itsarguments. ','message is an error message; when absent, it defaults to assertion failed!','collectgarbage ([opt [, arg]])','This function is a generic interface to the garbage collector. It performs different functions according to itsfirst argument.'}
+content["Std Libs(标准库)"]["协同程序子库(Coroutine Sub-Lib)"]={2,'1.0','create, resume, running, status, wrap, yield','更多细节请参见《Lua 5.1 Reference Manual》中的"Coroutine Manipulation"章节。'}
+content["Std Libs(标准库)"]["字符串库(String  Lib)"]={3,'1.0','byte, char, dump, find, format, gmatch, gsub, len, lower, match, rep, reverse, sub, upper','更多细节请参见《Lua 5.1 Reference Manual》中的"String Manipulation"章节。'..nl..'　字符串函数upper和lower可能不适合当前的区域设置。在字符串中使用这些函数只有26个英文字母会进行大小写转换。此限制也同样适用于find, gmatch,和match函数参数中的模式串匹配符（即％a，％l，％u和％w）。'}
+content["Std Libs(标准库)"]["表库（Table Lib）"]={4,'1.0','concat, insert, maxn, remove, sort','更多细节请参见《Lua 5.1 Reference Manual》中的 "Table Manipulation" 章节。'}
+content["Std Libs(标准库)"]["Math Lib"]={5,'1.0','abs, acos, asin, atan, atan2, ceil, cos, cosh, deg, exp, floor, fmod, frexp, huge, ldexp, log, log10, max, min, modf, pi, pow, rad, random, randomseed, sin, sinh, sqrt, tan, tanh','更多细节请参见《Lua 5.1 Reference Manual》中的"Mathematical Functions"章节。下面的函数在数学表（math  table）中定义。无限大和未定义的结果将转换到相应的TI-Nspire\\1supersc TM表示并且与 TI-Nspire\\1supersc TM 数学扩展相配合。不支持字符串表达式（无限大和未定义）到数值表示的反向转换。'}
+content["Std Libs(标准库)"]["未实现的库"]={6,'1.0','file, io, os, debug','这些标准Lua库在TI-Nspire\\1supersc TM软件中不可用。'}
+content["Std Libs(标准库)"]["未实现的函数"]={7,'1.0','dofile, loadfile, module, package.cpath, package.loadlib, package.path, package.seeall','这些标准函数和标准表条目（standard table entries）在TI-Nspire\\1supersc TM软件中未提供。'}
+content["富文本框(2D Editor)"]={2}
+content["富文本框(2D Editor)"]["newRichText"]={1,'1.0',"D2Editor.newRichText()","创建并返回一个新的富文本框。"}
+content["富文本框(2D Editor)"]["createChemBox"]={2,'2.0','D2Editor:createChemBox()','在当前富文本框的光标处插入一个化学框。'..nl..'返回该富文本框对象。'}
+content["富文本框(2D Editor)"]["createMathBox"]={3,'2.0','D2Editor:createMathBox()','在当前富文本框的光标处插入一个数学框（表达式框）。'..nl..'返回该富文本框对象。'}
+content["富文本框(2D Editor)"]["getExpression"]={4,'2.0','D2Editor:getExpression()','将当前富文本框内容以一个UTF-8编码的字符串返回。'}
+content["富文本框(2D Editor)"]["getExpressionSelection"]={5,'2.0','D2Editor:getExpressionSelection()','该函数返回三个值：'..nl..'  （1）当前富文本框的内容以一个UTF-8编码的字符串返回  （2）当前的光标位置作为一个整数返回 （3）被高亮选中文本的开始位置作为一个整数返回'}
+content["富文本框(2D Editor)"]["getText"]={6,'1.0','D2Editor:getText()','将当前富文本框内容以一个UTF-8编码的字符串返回。'}
+content["富文本框(2D Editor)"]["hasFocus"]={7,'2.0','D2Editor:hasFocus()','如果当前富文本框具有焦点，那么返回true，否则返回false。'}
+content["富文本框(2D Editor)"]["isVisible"]={8,'2.0','D2Editor:isVisible()','如果当前富文本框是可见的，那么返回true，否则返回false。'}
+content["富文本框(2D Editor)"]["move"]={9,'1.0','D2Editor:move(x,y)','设置当前富文本框左上角的坐标。x和y都必须在-32767和32767之间。'..nl..'返回当前富文本框对象。'}
+content["富文本框(2D Editor)"]["registerFilter"]={10,'2.0','D2Editor:registerFilter(handlerTable)','此函数能够注册一个事件处理函数表(Table)，或者通过传递一个nil来注销事件处理函数表。这些处理函数能够在事件被富文本框响应之前进行过滤，并决定是否将事件继续传递给富文本框。'..nl..'参数handlerTable是一个事件处理函数的表(table)。任何在事件处理（Event Handling）一节中所描述的事件都可以被处理函数表中对应的函数所处理。'..nl..'样例:'..nl..'textBox:reisterFilter({'..nl..'  tabKey = function()'..nl..'    textBox2:setFocus()'..nl..'  end,'..nl..'  clearKey = function()'..nl..'    textBox:setExpression("")'..nl..'  end'..nl..'})'}
+content["富文本框(2D Editor)"]["resize"]={11,'1.0',"D2Editor:resize(width,height)","更改富文本框的宽度和高度。width  和height必须大于0且小于32768。"..nl.."返回当前富文本框对象。"}
+content["富文本框(2D Editor)"]["setBorder"]={12,'2.0','D2Editor:setBorder(thickness)',"设置富文本框的边框厚度。参数thickness必须在0到10之间。"..nl..'返回当前富文本框对象。'}
+content["富文本框(2D Editor)"]["setBorderColor"]={13,'2.0','D2Editor:setBorderColor(color)',"设置富文本框的边框颜色。 参数 color 必须介于0和16777215（即0x000000和0xFFFFFF）之间。"..nl..'返回当前富文本框对象。'}
+content["富文本框(2D Editor)"]["setColorable"]={14,'2.0','D2Editor:setColorable(true/false)','设置富文本框的内容能否被用户设置颜色。'..nl..'返回富文本框对象。'}
+content["富文本框(2D Editor)"]["setDisable2DinRT"]={15,'2.0','D2Editor:setDisable2DinRT(true/false)','关闭富文本框中输入的数学表达式的教材显示(2D layout of math)。'..nl..'返回富文本框对象。'}
+content["富文本框(2D Editor)"]["setExpression"]={16,'2.0','D2Editor:setExpression(text[,cursor[,selection[,full-precision]]])',"将参数text的值设置为富文本框的内容。参数cursor代表光标位置，它的值可以设置为1（文本开头），-1（文本末尾）或从1到text的长度加1范围内中的一个值。参数selection指定一个所要高亮选中的文本的结束位置。如果selection为-1，那么没有文本被选中。如果cursor<-1或selection<-1，则返回一个错误。如果未指定，则cursor和selection默认为-1。最后一个可选参数full-precision如果为true，将使用全精度，这就是说计算结果的所有位应全部显示。如果为false，表示计算结果应按照富文本框设置的精度进行舍入。"..nl.."返回富文本框对象。"}
+content["富文本框(2D Editor)"]["setFocus"]={17,'2.0','D2Editor:setFocus(true/false)','如果输入参数为true（默认）则将用户输入焦点置于当前富文本框。通常在事件on.getFocus处理时调用。'..nl..'返回当前富文本框对象。'}
+content["富文本框(2D Editor)"]["setFontSize"]={18,'2.0','D2Editor:setFontSize(size)','设置富文本框中的字号。在TI-Nspire\\1supersc TM CX和其他旧的手持设备中，字号受限于仅能从以下字号中选择一个：7，9，10，11，12，24。'..nl..'返回当前富文本框对象。'}
+content["富文本框(2D Editor)"]["setMainFont"]={19,'2.0','D2Editor:setMainFont','设置字体(“serif”(有衬线字体)  或“sansserif”(无衬线字体)) 与样式 (“r”（常规）, “b”（加粗）,  “i”（倾斜）, “bi”（加粗并倾斜）)。'..nl..'返回当前富文本框对象。'}
+content["富文本框(2D Editor)"]["setReadOnly"]={20,'1.0',"D2Editor:setReadOnly(true/false)","设置富文本框内容可以被用户修改(false)或不能被用户修改(true)。如果未指定一个明确的布尔值(boolean)那么默认为true。"..nl.."返回富文本框对象。"}
+content["富文本框(2D Editor)"]["setSelectable"]={21,'1.0',"D2Editor:setSelectable(true/false)","设置富文本框的内容可以被用户选择(true)或者不能被用户选择(false)。如果未指定一个明确的布尔值(boolean)那么默认为true。"..nl.."返回富文本框对象。"}
+content["富文本框(2D Editor)"]["setSizeChangeListener"]={22,'2.0','D2Editor:setSizeChangeListener','设置一个回调函数(callback function) 。当富文本框内容超出当前尺寸时，或能够以较少行数容纳内容时，或内容适合在较小的宽度的单独的一行上显示时会调用指定的回调函数。这个回调函数是一个void（即没有返回值）函数，能够调整编辑器到适当的大小。它接受以下参数传递:'..nl..'\\1title editor: 要改变尺寸的富文本框对象。'..nl..'\\1title w: 优化后可适应显示内容的宽度。'..nl..'\\1title h: 优化后可适应显示内容的高度。'..nl..'返回富文本框对象。'}
+content["富文本框(2D Editor)"]["setText"]={23,'1.0',"D2Editor:setText(text[,cursor[,selection[,full-precision]]])",'更多细节请参见 setExpression。 '..nl..'返回富文本框对象。'}
+content["富文本框(2D Editor)"]["setTextChangeListener"]={24,'2.0','D2Editor:setTextChangeListener(function(editor))','设置一个回调函数(callback function) 。当富文本框内容的改变时会调用指定的回调函数。该函数会被传递一个当前富文本框对象。这样可以即时处理文字输入。'..nl..'返回富文本框对象。'}
+content["富文本框(2D Editor)"]["setTextColor"]={25,'2.0','D2Editor:setTextColor(color)','设置富文本框文本的颜色。参数color必须介于0和16777215（即0x000000和0xFFFFFF）之间。'..nl..'返回富文本框对象。'}
+content["富文本框(2D Editor)"]["setVisible"]={26,'2.0','D2Editor:setVisible(true/false)','设置富文本框的可见性。'..nl..'返回富文本框对象。'}
+content["富文本框(2D Editor)"]["setWordWrapWidth"]={27,'2.0','D2Editor:setWordWrapWidth(width)','设置富文本框自动换行(word-wrapping)的宽度。如果编辑器在2D模式下，则被忽略。若要指定为富文本框的宽度，参数需设置为0。若要禁用自动换行，参数需设置为小于 0的值。 参数 width 必须在 -32767 到 32767之间。'}
+content["剪贴板库(Clipboard)"]={3}
+content["剪贴板库(Clipboard)"]["addText"]={1,'1.0',"clipboard.addText(string)",'将字符串的内容以纯文本方式复制到剪贴板中，MIME类型  “text/plain”。'}
+content["剪贴板库(Clipboard)"]["getText"]={2,'1.0',"clipboard.getText()",'这个例程将剪切板中的内容以纯文本字符串的形式返回。如果剪切板不包含任何文本(MIME类型  “text/plain”),返回 nil。'}
+content["光标库(Cursor)"]={4}
+content["光标库(Cursor)"]["set"]={1,'1.0',"cursor.set(cursorname)",'参数 cursorname是一个说明想要使用的鼠标指针形状的字符串。可以是以下字符串之一: "default", "interrogation", "crosshair", "text", "pointer", "link select", "diag resize", "wait busy", "hollow pointer", "rotation", "pencil", "zoom box", "hide", "arrow", "zoom out", "dotted arrow", "clear", "animate", "excel plus", "mod label", "writing", "unavailable", "resize row", "resize column", "drag grab", "hand open", "hand closed", "hand pointer", "zoom in", "dilation", "translation", "show"'}
+content["光标库(Cursor)"]["hide"]={2,'1.0',"cursor.hide()","此例程使手持设备上的鼠标指针隐藏。"}
+content["光标库(Cursor)"]["show"]={3,'1.0',"cursor.show()","此例程使手持设备上的鼠标指针可见。"}
+content["事件(Event)"]={5}
+content["事件(Event)"]["activate"]={1,'1.0','on.activate()','当脚本应用程序被激活时调用此事件处理程序。窗口大小在此处不能够被初始化。因此，如果有依赖窗口大小的图形元件，那么此处不适合对它们进行创建和放置。'}
+content["事件(Event)"]["arrowKey"]={2,'1.0','on.arrowKey(key)','当用户按下方向键(arrow key)时调用此事件处理程序。参数key可以是“up”,  “down”, “left”, 或者“right”。 如果脚本为特定的方向键实现了一个处理程序(例如on.arrowDown) ，那么此事件处理程序将不会被调用。'}
+content["事件(Event)"]["charIn"]={3,'1.0','on.charIn(char)','当用户输入一个字母、数字或其他字符时调用此事件处理程序。参数char通常是1个字节的字符串。但是由于它可以包含一个UTF-8编码的字符，它就有可能是2个或更多字节的字符串。同时，它也有可能包含从某个快捷键得到的一个函数名称的字母，如从trig菜单得到的“sin”。'}
+content["事件(Event)"]["backspaceKey"]={4,'1.0','on.backspaceKey()','当用户按下桌面平台键盘上的Backspace键时或者按下手持设备上的Del键时调用此事件处理程序。'}
+content["事件(Event)"]["backtabKey"]={5,'1.0','on.backtabKey()','当用户按下Shift + Tab时调用此事件处理程序。'}
+content["事件(Event)"]["clearKey"]={6,'1.0','on.clearKey()','当用户按下手持式键盘上的Clear键(ctrl + del) 时调用此事件处理程序 。'}
+content["事件(Event)"]["contextMenu"]={7,'1.0','on.contextMenu()','当用户按下Ctrl + Menu(context Menu key)时调用此事件处理程序。'}
+content["事件(Event)"]["copy"]={8,'1.0','on.copy()','当用户从菜单中选择复制(Copy)命令或按下Ctrl + C时调用此事件处理程序。'..nl..'\\1keyword 注意: 复制功能可通过toolpalette.enableCopy(enable)开启/关闭。'}
+content["事件(Event)"]["create"]={9,'1.0','on.create()','当脚本应用被创建以及窗口调整尺寸之后调用此事件处理程序。窗口尺寸和图文环境(window size and graphics context)此时是可用的。此事件处理程序结束后将会调用on.paint事件处理程序。最好将此函数视为一个自动触发一次的初始化方法。'..nl.."对于platform.apiLevel ≥ ‘2.0’的脚本，使用on.construction()代替。"}
+content["事件(Event)"]["cut"]={10,'1.0','on.cut()','当用户从菜单中选择剪切(Cut)命令或按下Ctrl + X时调用此事件处理程序。'..nl..'\\1keyword 注意:剪切功能可通过toolpalette.enableCut(enable)开启/关闭。'}
+content["事件(Event)"]["deactivate"]={11,'1.0','on.deactivate()','当脚本停用(deactivate)时调用此事件处理程序。这可能在用户将焦点移动到另一个页面或移动到同一页上的其他应用程序时发生。'}
+content["事件(Event)"]["deleteKey"]={12,'1.0','on.deleteKey()','当用户按下桌面键盘上的Delete键时调用此事件处理程序。它不是手持设备键盘上的Del 键。'}
+content["事件(Event)"]["destroy"]={13,'1.0','on.destroy()','在脚本应用被删除之前时调用此事件处理程序。当一个脚本应用被剪切到剪贴板，并且包含它的文件被关闭时，该脚本应用将被删除。'}
+content["事件(Event)"]["enterKey"]={14,'1.0','on.enterKey()','当用户按下Enter键时调用此事件处理程序。'}
+content["事件(Event)"]["escapeKey"]={15,'1.0','on.escapeKey()','当用户按下Esc键时调用此事件处理程序。'}
+content["事件(Event)"]["grabDown"]={16,'1,0','on.grabDown()','发生以下情况时调用此事件处理程序:'..nl..'- 当用户按下并持续按住手持设备上的抓移(Select)键'..nl..'- 当用户在手持设备上按下Ctrl + 抓移(Select)'..nl..'grabDown和grabUp事件在所有情况下阻止mouseUp事件的发生。当长按设备上的抓移(Select)键时，他们将先于mouseDown事件发生。'}
+content["事件(Event)"]["grabUp"]={17,'1.0','on.grabUp()','当抓取(grab)生效时，释放鼠标按键将调用该事件处理程序。'}
+content["事件(Event)"]["help"]={18,'1.0','on.help()','当用户按下帮助键(Help key )时调用此事件处理程序。 帮助键在手持设备上是 Ctrl + ?(在Trig按钮上)。'}
+content["事件(Event)"]["mouseDown"]={19,'1.0','on.mouseDown(x,y)','用户点击鼠标时调用此事件处理程序。参数x和y是相对于窗口的坐标，以像素为单位。'}
+content["事件(Event)"]["mouseMove"]={20,'1.0','on.mouseMove(x,y)','当用户移动鼠标时调用此事件处理程序。鼠标按钮不需要按下来触发此事件。'}
+content["事件(Event)"]["mouseUp"]={21,'1.0','on.mouseUp(x,y)','当用户释放鼠标按钮时调用此事件处理程序。'}
+content["事件(Event)"]["paint"]={22,'1.0','on.paint(gc)','当脚本应用窗口需要绘制时调用此事件处理程序。参数gc (graphics context，图文环境) 被脚本代码用于在窗口中绘图。'}
+content["事件(Event)"]["paste"]={23,'1.0','on.paste()','当用户从菜单中选择粘贴(Paste)命令或按下Ctrl + V时调用此事件处理程序。'..nl..'\\1keyword 注意: 粘贴功能可通过toolpalette.enablePaste(enable)开启/关闭。'}
+content["事件(Event)"]["resize"]={24,'1.0','on.resize(width,height)','当脚本应用的窗口大小改变时会调用此事件处理程序。这里适合初始化（或重新初始化）基于窗体大小的图形对象(graphical objects)。'}
+content["事件(Event)"]["restore"]={25,'1.0','on.restore(state)','当脚本应用从一个已经保存过状态(state)的文档中恢复，或者应用被粘贴到一个文档中时，会调用此事件处理程序。仅在之前应用被复制到剪贴板(Clipboard)或保存到一个文档时将状态和应用一同进行了保存，该事件处理程序才会被调用。参见on.save事件处理程序。 参数state是事件处理程序on.save返回的表。'..nl..'\\1keyword 警告: 在脚本初始化过程中无法使用的函数在on.restore中同样不可用。不能被调用的函数是math.eval和platform.isDeviceModeRendering。'}
+content["事件(Event)"]["returnKey"]={26,'1.0','on.returnKey()','当用户按下手持设备上的回车键 (Return key,在实体机键盘右下处带箭头的按键)时调用该事件处理程序。'}
+content["事件(Event)"]["save"]={27,'1.0','on.save()','当脚本应用被保存到文件或者复制到剪贴板(Clipboard)时调用此事件处理程序。本事件处理程序应当返回一个当事件on.restore处理程序调用时用于恢复适当数据的表 (table)。'}
+content["事件(Event)"]["tabKey"]={28,'1.0','on.tabKey()','当用户按下Tab键时调用此事件处理程序。'}
+content["事件(Event)"]["timer"]={29,'1.0','on.timer()','如果脚本应用实现了on.timer，那么每次计时器(timer)时钟周期到了时会调用此事件处理程序。'}
+content["事件(Event)"]["varChange"]={30,'1.0','on.varChange(varlist)','当被监控的变量被另一个应用改变时调用此事件处理程序。参数varlist是所有被更改的变量名称列表。这个事件处理程序必须返回一个值表明它接受新赋予的值或者不接受更改。'..nl..'有效的返回值及其含义:'..nl..'\\1keyword 0: 成功: 脚本应用接受更改。'..nl..'\\1keyword -1: 因范围而不接受: 新值不满足条件，因为它太小或者太大而超出了范围。'..nl..'\\1keyword -2: 因类型而不接受: 新值不满足条件，因为其类型无法被脚本应用中使用。'..nl..'\\1keyword -3:因存在性而不接受:另一个应用删除了变量，而本应用需要它。'}
+content["API2.0事件"]={6}
+content["API2.0事件"]["construction"]={1,'2.0','on.construction()','此函数保证先于任何其它事件调用。'}
+content["API2.0事件"]["createMathBox"]={2,'2.0','on.createMathBox()','当用户按下Ctrl + M或插入一个数学框(表达式框，Expression Box)时调用此事件处理程序。如果合适，此事件处理程序的实现将可在相应的富文本框插入一个数学框。'}
+content["API2.0事件"]["getFocus"]={3,'2.0','on.getFocus()','当脚本收到用户输入焦点时调用此事件处理程序。'}
+content["API2.0事件"]["getSymbolList"]={4,'2.0','on.getSymbolList()','当脚本应用符号列表(symbol list)被序列化(serialize)到剪贴板时调用此事件处理程序。该脚本返回需要拷贝到剪切板的符号表(symbol table)中变量名称的一个列表。TI-Nspire\\1supersc TM 软件在复制脚本应用程序的同时也复制变量名称和值。之后，当用户粘贴脚本应用程序到另一个问题中时，系统会将相应的变量添加到该问题的符号表中。需要注意的是，on.getSymbolList()仅在当一个包含脚本应用的页面被复制时，而不是在当一个包含脚本应用的问题被复制时被调用。这是因为当问题被复制时，整个符号表也将被复制。'..nl..'例如，下面的函数表明变量f1需要与应用程序一同被复制到剪贴板中。当应用程序粘贴到其他的问题甚至其他的文档TNS中时，f1也会被添加到符号表中。:'..nl..'function on.getSymbolList()'..nl..'    return {"f1"}'..nl..'end'}
+content["API2.0事件"]["loseFocus"]={5,'2.0','on.loseFocus()','当脚本失去用户输入焦点时调用此事件处理程序。'}
+content["图形库(Graphics)"]={7}
+content["图形库(Graphics)"]["clipRect"]={1,'1.0',"gc:clipRect(op[,x,[y,[width,[height]]]])",'设置剪辑矩形(clipping rectangle)以用于随后的图形操作。参数 op为这几个字符串中的一个: "set," "reset," "intersect," 或 "null."'..nl..'\\1title Operation:'..nl..'\\1title reset: 设置剪辑矩形包含整个窗口。剩余参数被忽略并省去。'..nl..'\\1title set: 设置剪辑矩形到x, y坐标处，大小为指定的宽度(width) 和高度(height)。未指定参数则默认为系统窗口位置和大小。'..nl..'\\1title null:  将剪辑矩形置空。所有随后的图形命令会被忽略。'..nl..'通常“set”操作在画图前被调用，比如绘制一段文字。在绘制完最后一个需要剪辑的图形后调用“reset”操作是非常重要的，这样就不会残留下剪辑矩形进而产生副作用。'}
+content["图形库(Graphics)"]["drawArc"]={2,'1.0',"gc:drawArc(x,y,width,height,startAngle,arcAngle)","根据矩形左上角坐标(x,y)，以及以像素为单位的宽度(width)和高度(height)来绘制一个弧。参数width和height必须大于等于0。这个弧从startAngle角度开始，到endAngle角度处结束。0角度指向右方，90度角指向上方。（均采用标准的数学规则。但值得特别指出的是y轴在此倒置）。"..nl.."如果要绘制一个圆，宽度和高度必须相等，起始和结束角度也必须是0度和360度。如果宽度和高度不相等，此例程将会绘制出一个椭圆。"}
+content["图形库(Graphics)"]["drawPolyLine"]={3,'1.0',"gc:drawPolyLine({x1,y1,x2,y2,...,xn,yn})","绘制出连接一系列点(x,y)的线。多边形绘制时并不是自动闭合的。为了得到闭合的多边形，第一个点的坐标需要在点的列表末尾再出现一次。"}
+content["图形库(Graphics)"]["drawRect"]={4,'1.0',"gc:drawRect(x,y,width,height)","根据给定的宽度(width)和高度(height)以点(x, y)为矩形的左上角绘制一个矩形。参数width和height必须大于等于0。"}
+content["图形库(Graphics)"]["drawString"]={5,'1.0','gc:drawString("text",x,y[,vertalignment])','在窗口中的像素坐标(x,y)处绘制字符串。对齐方式(vertical alignment,即参数vertalignment)可以是“baseline”, “bottom”, “middle”,  或者 “top”。 这种对齐是通过对字符串中的字符包围一个矩形，以矩形的高度来进行对齐。如果未指定对齐方式那么默认为“none”。'..nl..'返回所绘制文本末尾像素的x坐标。'}
+content["图形库(Graphics)"]["fillArc"]={6,'1.0',"gc:fillArc(x,y,width,height,startAngle,endAngle)","用预设颜色填充一段弧。参数width和height必须大于等于0。设置填充颜色请参见setColorRGB。"}
+content["图形库(Graphics)"]["fillPolygon"]={7,'1.0',"gc:fillPolygon({x1,y1,x2,y2,...,xn,yn})","用预设颜色填充一个多边形。点的列表限定了一个多边形。设置填充颜色请参见setColorRGB。"}
+content["图形库(Graphics)"]["fillRect"]={8,'1.0',"gc:fillRect(x,y,width,height)","用预设颜色填充一个矩形。参数width和height必须大于等于0。设置填充颜色请参见setColorRGB。"}
+content["图形库(Graphics)"]["getStringHeight"]={9,'1.0','gc:getStringHeight("text")',"返回文本的像素高度。此时像素高度根据先前调用的setFont设定的字体而定。"}
+content["图形库(Graphics)"]["getStringWidth"]={10,'1.0','gc:getStringWidth("text")',"返回文本的像素宽度。此时像素宽度根据先前调用的setFont设定的字体而定。"}
+content["图形库(Graphics)"]["setColorRGB"]={11,'1.0',"gc:setColorRGB(red,green,blue)\n gc:setColorRGB(0xRRGGBB)","为随后的绘制和填充例程设定颜色。红、绿、蓝三种分量颜色的取值范围在0到255之间。例如黑色是0,0,0，而白色是255,255,255。此外，单独的一个数值也可以被当做参数，换算公式为blue + 255 * (green + 255 * red)，这种方法仅在platform.level = '2.0'中可用。"}
+content["图形库(Graphics)"]["setFont"]={12,'1.0',"gc:setFont(family,style,size)",'为绘制和测量文本设定字体。字体(family)可以是“sansserif” 或 “serif”。字形(style)可以是“r” (常规), “b” (加粗), “i” (倾斜), 或 “bi” (加粗并倾斜)。在TI-Nspire\\1supersc TM和其他旧的手持设备中，字号(size)受到限制，只能从以下字号中选择一个: 7, 9, 10, 11, 12, or 24.'..nl..'返回生效的字体，字形和字号。'}
+content["图形库(Graphics)"]["setPen"]={13,'1.0',"gc:setPen([thickness[,style]])",'设定用于绘制直线和边框的线条样式。参数thickness可以是“thin”, “medium”,  或“thick”。如果没有指定thickness，默认为 “thin”。参数style可以是“smooth”, “dotted”, 或 “dashed”。如果没有指定style，默认为“smooth”'}
+content["图形库(Graphics)"]["drawImage"]={14,'1.0',"gc:drawImage(image,x,y)","在(x, y)处绘制一张图像(image)。所绘制的图像必须由在之前调用image.new(...)生成。"}
+content["图形库(Graphics)"]["drawLine"]={15,'1.0',"gc:drawLine(x1,y1,x2,y2)","在(x1,y1)和(x2,y2)两点之间绘制一条线。"}
+content["图像库(Image)"]={8}
+content["图像库(Image)"]["new"]={1,'1.0',"image.new(str)","这个函数通过输入的字符串来返回一个新的image对象。这个字符串包含一个图像数据头(header)和其后的每个像素的二进制表示。"}
+content["图像库(Image)"]["copy"]={2,'1.0',"image:copy(width,height)","返回图像缩放到指定像素宽度(width)和高度(height)的副本。宽度和高度默认为源图像的尺寸。"}
+content["图像库(Image)"]["height"]={3,'1.0',"image:height()","返回图像的像素高度。"}
+content["图像库(Image)"]["rotate"]={4,'2.0',"image:rotate(angle)",'返回图像逆时针旋转angle度后的副本。'}
+content["图像库(Image)"]["width"]={5,'1.0',"image:width()","返回图像的像素宽度。"}
+content["数学库扩展(Math Lib Ext)"]={9}
+content["数学库扩展(Math Lib Ext)"]["eval"]={1,'1.0',"math.eval(math_expression) -- platform.apiLevel  = '2.0'    math.eval(math_expression [,exact]) -- platform.apiLevel  = '1.0'",'该函数发送一个表达式或命令给 TI-Nspire\\1supersc TM 数学服务器进行计算。输入的表达式必须是字符串，以便TI-Nspire\\1supersc TM 数学服务器解释和计算。'..nl.."第二个参数exact (仅在platform.apiLevel = ‘1.0’中使用)只有在计算机代数系统（Computer Algebra System，简称CAS）中是有意义的。如果为true，它指示数学服务器计算并返回精确的数值结果。exact默认值是false,这样数学服务器将试图计算近似结果。从platform.apiLevel = ‘2.0’开始,计算将使用当前文档的设置，除非所有计算均在近似模式下进行全精度计算。当前文档设置可以由math.setEvalSettings覆盖。"..nl..'如果数学服务器成功计算了表达式，它以基本Lua数据类型返回结果。如果由于语法、简化或语义错误，数学服务器无法计算表达式， eval将返回两个结果：nil和对服务器有意义的错误号。（错误号记录在《TI-Nspire?参考指南》—错误代码和math.eval 消息中）如果服务器计算出是符号结果，它不能由基本Lua类型表示，所以eval返回nil和字符串 “incompatible data 类型”'..nl..'\\1keyword 注意: 由于math.eval总是在近似模式进行计算，像布尔逻辑（Boolean logic）和一些转换将抛出错误:'..nl..'\\1title Boolean \\1title logic:'..nl..'r,e = math.eval("1 and 2") 返回 "自变量必须是布尔表达式或整数" 错误'..nl..'\\1title Convert \\1title to \\1title base10'..nl..'r,e = math.eval("0@>Base10") 返回 "域错误"'..nl..'math.evalStr可以在这种情况下正常工作。'..nl..'\\1keyword 警告: 在脚本初始化过程中不能使用math.eval。'}
+content["数学库扩展(Math Lib Ext)"]["evalStr"]={2,'2.0','math.evalStr(math_expression)','该函数发送一个表达式或命令给TI-Nspire\\1supersc TM 数学服务器进行计算。输入的表达式必须是字符串，以便 TI-Nspire\\1supersc TM 数学服务器解释和计算。计算使用当前文档设置进行，设置可以由math.setEvalSettings重设。注意:所有的计算都在全精度下进行进行，无论文档如何设置或重设。'..nl..'如果数学服务器计算表示式成功，返回一个字符串结果，如果服务器没有返回计算的结果， evalStr函数不返回结果。如果数学服务器由于语法、简化或语义错误没有正确返回结果，evalStr返回两个结果： nil和对服务器有意义的错误代码。'}
+content["数学库扩展(Math Lib Ext)"]["getEvalSettings"]={3,'2.0','math.getEvalSettings()','返回一个当前math.eval使用的文档设置的表(table)。这些设置与当前文档设置相同，除非调用了setEvalSettings。'..nl..'\\1keyword 样例: 这个例子阐释了由 getEvalSettings 返回的表的结构:'..nl.."{"..nl.."  {'Display Digits','Fixed12'},"..nl.."  {'Angle Mode','Gradian'},"..nl.."  {'Calculation Mode','Approximate'},"..nl.."  {'Real or Complex Format','Polar'},"..nl.."  {'Exponential Format','Engineering'},"..nl.."  {'Vector Format','Cylindrical'},"..nl.."  {'Base','Binary'},"..nl.."  {'Unit System','Eng/US'},"..nl.."}"}
+content["数学库扩展(Math Lib Ext)"]["setEvalSettings"]={4,'2.0','math.setEvalSettings(settingStructure)','此函数用来为后续的math.eval和math.evalStr数学计算重设一个或多个当前文档设置。它不会改变文档当前设置。参数settingStructure 是由一些子表构成的表(table)，每个内部的表包含要重设的文档设置名称和要使用的设置值。 为了方便用户， setEvalSettings 接受使用设置的序号和使用设置值的序号进行设置。使用的序号对应于设置的顺序和它们在 文件-> 设置 -> 文档设置 中的值的顺序。'..nl..'参见getEvalSettings以获得 setting structure的样例。'}
+content["平台库(Platform  Library)"]={10}
+content["平台库(Platform  Library)"]["apiLevel"]={1,'2.0','platform.apiLevel','这是脚本环境版本的唯一标识。如果一个脚本没有申请所需的API级别(API level)，那么默认将采用创建脚本时使用的API级别。如果申请一个当前版本所不支持的API级别，那么将会导致TI-Nspire\\1supersc TM软件使用当前版本所支持的最高API级别。'}
+content["平台库(Platform  Library)"]["gc"]={2,'1.0',"platform.gc()",'返回一个虚拟的图文环境(graphics context)。当正常的图文环境不可用时，它通常被用来测量字符串的像素宽度和高度。这种情况可能在脚本应用初始化过程中创建新的文本元素时出现。图文环境只在 paint事件期间有效，此时再为文本创建和规定容器长度显然太晚了。这个图文环境不可以被用于绘图，因为它并不一定与窗口关联。'..nl.."在使用图文环境之前，最重要的一点是在使用其中的函数getString前用gc:begin()来启动它，使用完之后记得调用gc:finish()来废除它。"}
+content["平台库(Platform  Library)"]["hw"]={3,'2.0',"platform.hw()",'返回一个表示主机CPU硬件速度的数值。数字越大，硬件速度越快。'..nl..'\\1keyword 返回值:'..nl..'\\1keyword 3: TI-Nspire\\1supersc TM B&W 和 CX手持设备'..nl..'\\1keyword 7: Microsoft Windows, Mac 或 网络播放器'}
+content["平台库(Platform  Library)"]["isColorDisplay"]={4,'1.0',"platform.isColorDisplay()","如果主机平台(host platform)是彩色显示时，返回true。如果是灰度显示则返回false。"}
+content["平台库(Platform  Library)"]["isDeviceModeRendering"]={5,'1.0',"platform.isDeviceModeRendering()","当脚本在手持设备或桌面软件模拟器视图(emulator)中运行时返回true，当其在桌面软件普通视图(normal view)下运行时返回false。"..nl.."注意:platform.isDeviceModeRendering在脚本初始化期间或在on.restore事件中不可用。"}
+content["平台库(Platform  Library)"]["registerErrorHandler"]={6,'2.0',"platform.registerErrorHandler(function(lineNumber,errorMessage,callStack,locals)...end)",'这一函数为脚本设置了错误处理函数。错误处理函数的设置可以为脚本遇到错误时提供控制。返回 true可阻止向用户报告错误，脚本将在下一个事件中继续执行。.'..nl..'\\1keyword 注意: 在脚本初始化期间或在on.restore中发生错误时，不会调用错误处理函数。'}
+content["平台库(Platform  Library)"]["window:height"]={7,'1.0',"platform.window:height()","返回当前显示窗口的像素高度。"}
+content["平台库(Platform  Library)"]["window:width"]={8,'1.0',"platform.window:width()","返回当前显示窗口的像素宽度。"}
+content["平台库(Platform  Library)"]["window:invalidate"]={9,'1.0',"platform.window:invalidate(x,y,width,height)","这个函数将窗口的一个区域设为无效并强制其重新绘制。参数x和y默认为(0, 0)，width和height默认为窗口的像素宽度和高度。通过调用platform.window:invalidate() 可强制重新绘制整个窗口，这时允许所有参数取默认值。"}
+content["平台库(Platform  Library)"]["setFocus"]={10,'2.0',"platform.window:setFocus(true/false)",'这一函数将所有焦点设置到主窗口。其他对象的焦点将全部移除(例如D2Editor)。'}
+content["平台库(Platform  Library)"]["withGC"]={11,'2.0',"platform.withGC(function,args)",'在一个虚拟的图文环境中执行function(args)并且返回函数function()的所有返回值。虚拟图文环境通常是用于在paint事件外测量字符串的像素宽度和高度。将布局(layout)从paint事件处理程序中分离是提高脚本性能的好方法。可能在on.resize()事件中、用户交互更改数据时或者计时器过期时(timer expiration)，会更改布局。脚本不应该假设任何状态，例如字号，会从一次platform.withGC的调用保留至下一次调用platform.withGC。'..nl..'这个图文环境不可以被用于绘图。'}
+content["字符串库扩展(String Lib Ext)"]={11}
+content["字符串库扩展(String Lib Ext)"]["split"]={1,'1.0','string.split(str[,delim])','基于分隔符delim将字符串str分成一些子字符串,返回子字符串列表。分隔符默认为白色空格(”%s+”)。'}
+content["字符串库扩展(String Lib Ext)"]["uchar"]={2,'1.0','string.uchar(chnum,...)','Unicode字符可以通过UTF-8编码而被包含在字符串中。这个例程将一个或多个Unicode 字符代码转换为一个UTF-8字符串。'}
+content["字符串库扩展(String Lib Ext)"]["usub"]={3,'1.0','string.usub(str,startpos,endpos)','这个例程返回字符串str的一个子字符串。它是Unicode版本的string.sub。它将多字节字符编码成UTF-8。'..nl.."警告:这一例程的代价很高。因为在其操作期间，会为其分配一块临时内存作为缓冲区。"}
+content["计时器(Timer)"]={12}
+content["计时器(Timer)"]["getMilliSecCounter"]={1,'1.0','timer.getMilliSecCounter()','返回内部毫秒计数的值。计数器(counter)在计到 2\\1supersc 32 后重置为零。'}
+content["计时器(Timer)"]["start"]={2,'1.0','timer.start(period)','以参数period为给定的时间周期启动计时器（单位:秒）。这一时间频率必须≥ 0.01 (10 ms)。如果调用这个程序时计时器已经在运行，则计时器会被重置为新的时间周期。'..nl.."注意:timer.start()不可在处理on.timer()事件期间调用。除非它是on.timer()事件结束前的最后一条语句。"}
+content["计时器(Timer)"]["stop"]={3,'1.0','timer.stop()','停止计时器。'}
+content["菜单(Tool Palette)"]={13}
+content["菜单(Tool Palette)"]["register"]={1,'1.0','toolpalette.register(menuStructure)','脚本应用调用这个函数来在TI-Nspire\\1supersc TM 框架(framework)中注册一个菜单。而菜单数据结构是一个表(table)，其中描述了每一个菜单(tool box，一级菜单)的名称，以及当用户选择了其中的某个子项(item)时应该调用的函数。toolpalette.register()函数可以在脚本的开始部分就被调用一次。一旦被注册，菜单将被TI-Nspire\\1supersc TM 框架自动接管，最多只能有15个一级菜单，每个一级菜单只能有30个子项。'..nl.."下面的样例展示了菜单表的数据结构以及其显示内容:"..nl.."menu={"..nl..'   {"Mode", --菜单"Mode"'..nl..'      {"Decimal",setDecg}, --子项                                              "Decimal" 会调用 setDec()'..nl..'      {"Hexadecimal",setHex},'..nl..'   },'..nl..'   {"Boolean",'..nl..'      {"And",binopAnd},'..nl..'      {"Or",binopOr},'..nl..'   },'..nl..'}  toolpalette.register(menu)'..nl..'当用户选择了某个一级菜单的某个子项时，会给相关联的函数传入2个参数：一级菜单名称和子项名称。在paint事件中调用 toolpalette.register() 可能会被忽略并因此而无效。从 apiLevel ‘2.0’开始， toolpalette.register() 可以在程序中被多次调用以便在运行时动态更改。'}
+content["菜单(Tool Palette)"]["enable"]={2,'1.0','toolpalette.enable(toolname,itemname,enable)','这个例程可以开启/关闭某个子项(item)。参数toolname是一个包含一级菜单名称(tool box)的字符串。参数itemname是一个包含子项名称的字符串。参数enable是一个布尔值(Boolean value),如果为true那么开启一个子项，如果为false那么关闭一个子项。如果成功开启/关闭了一个子项那么这个例程会返回true。如果没有在已经注册的菜单中找到指定的子项，会返回一个nil。'}
+content["菜单(Tool Palette)"]["enableCut"]={3,'1.0','toolpalette.enableCut(enable)','这一例程启用或禁用 编辑->剪切 菜单命令。参数enable是一个布尔值，其值为true时启用命令，为 false时禁用。'}
+content["菜单(Tool Palette)"]["enableCopy"]={4,'1.0','toolpalette.enableCopy(enable)','这一例程启用或禁用 编辑->复制 菜单命令。参数enable是一个布尔值，其值为true时启用命令，为 false时禁用。'}
+content["菜单(Tool Palette)"]["enablePaste"]={5,'1.0','toolpalette.enablePaste(enable)','这一例程启用或禁用 编辑->粘贴 菜单命令。参数enable是一个布尔值，其为true时启用命令，为 false时禁用。'}
+content["符号表库(Variable Lib)"]={14}
+content["符号表库(Variable Lib)"]["list"]={1,'1.0','var.list()','这个函数返回一个当前已在符号表中定义了的变量名称列表。'}
+content["符号表库(Variable Lib)"]["makeNumericList"]={2,'2.0','var.makeNumericList(name)','使用给定参数name在符号表中创建一个数组(list)。这个数组被优化用来保存数值。例程 storeAt和  recallAt作用在用这个函数创建的列表上操作时效率会有很大的提升。'..nl..'\\1keyword 注意: T这一函数不能被用于创建数字矩阵。例程var.recallAt和var.storeAt可以处理矩阵，但矩阵必须是被其他方式创建而来。'}
+content["符号表库(Variable Lib)"]["monitor"]={3,'1.0','var.monitor(name)',"开启对给定名称的数学变量name的监视。一旦其他应用改变了这一变量的值，这个脚本应用的on.varChange事件处理程序就会被调用(参见on.varChange的描述)。除0以外的其他返回值均视为错误。"}
+content["符号表库(Variable Lib)"]["recall"]={4,'1.0','var.recall(name)','返回指定名称的数学变量name的值。如果指定的变量类型没有兼容的Lua类型，返回nil和一个错误信息。'}
+content["符号表库(Variable Lib)"]["recallAt"]={5,'2.0','var.recallAt(name,col[,row])','返回符号表中一个数组或矩阵某个单元的值。col是以1为单位的矩阵或数组列数。row是以1为单位的行数.仅在返回矩阵中的某值时，需要参数row 。 这一函数为操作数值而优化，一般返回一个数字。如果要被取回单元的值不是数字，函数返回nil和一个错误消息字符串。'}
+content["符号表库(Variable Lib)"]["recallStr"]={6,'1.0','var.recallStr(name)','以字符串格式返回指定名称的数学变量name的值。一些数学类型不具备兼容的Lua类型，但所有的数学类型都可以用字符串来表示。若即使用字符串也无法返回，那么返回nil和一个错误信息。'}
+content["符号表库(Variable Lib)"]["store"]={7,'1.0','var.store(name,value)','将参数value的值存储为指定名称的数学变量name。如果值无法存储，返回一个错误信息。否则，返回nil。'}
+content["符号表库(Variable Lib)"]["storeAt"]={8,'2.0','var.storeAt(name,numericValue,col[,row])','将一个数值存入符号表中一个数组或矩阵name的某个单元。col是以1为单位的矩阵或数组列数。row是以1为单位的行数.仅在存储矩阵中的某值时，需要参数row。 存储值必须为数字。任何其他类型都会引发错误。通过存储到数组末尾后边的一列，新值可以被附加到数组中。这个函数作为一种优化非常有用,特别是在添加新值到列表中时。成功则返nil，否则，若这一值不能被添加到指定的数组或矩阵中时，返回“cannot store”。'}
+content["符号表库(Variable Lib)"]["unmonitor"]={9,'1.0','var.unmonitor(name)','关闭对指定名称的数学变量的监视。'}
+content["杂项"]={15}
+content["杂项"]["class"]={1,'1.0',"class([parent_class])","返回一个新的类。如果指定了一个父类，则新类将会继承父类。"..nl.."Widget=class()"..nl.."function Widget:init() ... end"..nl.."Button=class(Widget)"..nl.."function Button:init() ... end"..nl.."例如上面的例子，当脚本调用 Button()时,  一个新的Button对象将被创建。 The Button:init()函数被调用来进行初始化 , 新生成的 Button 对象会作为函数调用的结果返回。 在这个例子中的 Button类继承Widget类中定义的所有方法和属性。Button类可以覆盖父类的任何方法。"}
+content["杂项"]["document.markChanged"]={2,'1.0',"document.markChanged()","这个例程会标记当前文档已被修改，在关闭文档之前用户将被提示保存 TI-Nspire\\1supersc TM 文档。"}
+content["杂项"]["locale.name"]={3,'1.0',"locale.name()","返回当前所在区域的名称。区域名称是一组含两个字母的语言代码。在这之后可能会有一条下划线和一组两个字母的国家代码。"}
+
+
+fontSizes={7,9,10,11,12}
+currentSize=3
+
+function copyTable(t)
+	local t2 = {}
+	for k,v in pairs(t) do
+	    if type(v)=="table" then v=copyTable(v) end
+		t2[k] = v
+	end
+	return t2
+end
+
+function loadFunction(box,item)
+    local text=content[box][item]
+    local head=""
+    for i, word in pairs(text[3]:split(" ")) do
+        head=head.."\\1keyword "..word.." "
+    end
+    head=head:sub(1,head:len()-1)
+    local apiLevel="API级别:platform.apiLevel='"..text[2].."'"
+    textBox:setText(head..nl..apiLevel..nl..text[4],1,head:len())
+end
+
+function createMenu()
+    local menu={}
+    for boxName, box in pairs(content) do
+        --print("box: "..boxName)
+        local submenu={boxName}
+        for itemName, item in pairs(box) do
+            if itemName~=1 then
+                local menuItem={itemName, loadFunction}
+                submenu[item[1]+1]=copyTable(menuItem)
+            end
+        end
+        menu[box[1]]=copyTable(submenu)
+    end
+    toolpalette.register(menu)
+end
+createMenu()
+
+function on.charIn(chr)
+    if textBox.setFontSize then
+        if chr=="+" then
+            currentSize=math.min(currentSize+1,#fontSizes)
+        elseif chr=="-" then
+            currentSize=math.max(currentSize-1,1)
+        end
+        textBox:setFontSize(fontSizes[currentSize])
+    end
+end
+
+textBox=D2Editor.newRichText()
+textBox:move(10,5)
+textBox:resize(298,202)
+textBox:setReadOnly(true)
+textBox:setText(titleText)
+
+function on.escapeKey()
+    textBox:setText(titleText)
+end
+
+function on.getFocus()
+    if textBox.setFocus then
+        textBox:setFocus(true)
+    end
+end
+
+function on.resize(w,h)
+    WW=w
+    WH=h
+    textBox:resize(math.max(WW-20,50),math.max(WH-10,50))
+end
+

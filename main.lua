@@ -1,5 +1,5 @@
 
-girds = {
+grids = {
 }
 
 Tile = {
@@ -20,6 +20,6 @@ function Tile:updatePosition(position)
     y = position.y;
 end
 
-function girds:merge()
+function grids:merge()
 
 end
