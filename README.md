@@ -8,6 +8,6 @@ Actually TI-Lua for this project.
 ====
 Something Pichu said:
 --TODO: Let pichu the OIer do this[From A2 to Pichu]
-nia…I will try for this project.
+nia…I will try.
 
 Pichu, 20140326
