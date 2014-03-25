@@ -2,11 +2,11 @@
 -- Original JavaScript Source: https://github.com/gabrielecirulli/2048/tree/master/js
 -- I don't have to work so much if there is a JavaScript to Lua compiler. However there isn't. http://lua-users.org/lists/lua-l/2011-11/msg00668.html
 --[[ (Long Copyrights) --]]
--- platform.apilevel = '1.0'   -- TI-Lua API version, used for var funcs to store highscores and maybe Save/Load for the game.
+platform.apilevel = '1.0'   -- TI-Lua API version, used for var funcs to store highscores and maybe Save/Load for the game.
 
 size = 4
 score = 0
-powers = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536}
+powers = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536} --use powers[Tile[row][col]] 
 over = False
 
 init = function() --generates an empty size-by-size table. 
@@ -33,13 +33,14 @@ restartGame = function()
 end
 
 continueGame = function()
+    keepPlaying = True
     --TODO:Simply delete the buttons drawn.
     checkscore()
     --TODO:Remember to draw a restart button (init only actually) , or just draw it at init.
 end
 
 isGameTerminated = function() --directly translated from JavaScript
-   if this.over or (this.won and not this.keepPlaying) then --LOTS OF STUBS
+   if this.over or (this.won and not this.keepPlaying) then
      return true
    else
      return false
@@ -68,9 +69,9 @@ merge = function (direction) --Seems stupid, Hmm.
     if direction == up then
     for i=1, size do
         for j=1, size do
-            if BL[i][j] == BL[i][j+1] then
-                BL[i][j] = BL[i][j]+1 
-                BL[i][j+1] = 0
+            if Tile[i][j] == Tile[i][j+1] then
+                Tile[i][j] = Tile[i][j]+1 
+                Tile[i][j+1] = 0
             end
         end
     end
@@ -86,6 +87,24 @@ addRandomTile = function()
     -- Do after pushing
     cell = this.randomAvailableCell --{x, y}
     block = math.random(1,2)
-    Tile [var.recallAt("cell", 1) ][var.recallAt("cell", 2)] = var.recall(block)
+    Tile [cell[1]][cell[2]] = var.recall(block)
 end
+
+savet = function()
+    for i=1,size do
+        for j=1,size do
+            -- SlotNum = i*size + j -- For TI API 1.0, uses multiple varibles
+            var.storeAt("Slot", Tiles[i][j], i, j) --requires TI API 2.0, uses a matrix
+        end
+    end
+end
+
+loadt = function()
+    for i=1,size do
+        for j=1,size do
+            Tiles[i][j] = var.recallAt( "Slot,", i, j) --requires TI API 2.0
+        end
+    end
+end
+
 
