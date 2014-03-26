@@ -171,8 +171,8 @@ GameManager.prototype.move = function(direction)
           moved = true -- The tile moved from its original cell!
         end
       end
-    end) -- What happened to the syntax?
-  end)
+    end -- What happened to the syntax?
+  end
 
   if moved then
     this.addRandomTile()
